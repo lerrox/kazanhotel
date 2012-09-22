@@ -3,71 +3,76 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+    
+def make_upload_path(instance, filename):
+    """Generates upload path for FileField"""
+    return u"media/img/%s" % ( filename)
+    
+
 
 # инфа о договоре с отелем и условиях сотрудничества
 class ContractWithHotel(models.Model):
-    # номер договора
     contractData = models.CharField(max_length = 500)
-    contractDateFrom = models.DateField
-    contractDateTo = models.DateField
+    contractDateFrom = models.DateField()
+    contractDateTo = models.DateField()
     # условия договора - например условия предоставления скидки
-    contractTerms = models.TextField
-    discountMin = models.IntegerField
-    discountMax = models.IntegerField
-    discountValue = models.IntegerField
+    contractTerms = models.TextField()
+    discountMin = models.IntegerField()
+    discountMax = models.IntegerField()
+    discountValue = models.IntegerField()
     
     def __unicode__(self):
-        return "контакт №{0}".format(self.contractData)
+        return "contract {0}".format(self.contractData)
 
 # описываем отель
 class Hotel (models.Model):
     # описание отеля
-    name = models.CharField(max_lenght=100)
-    descriptions = models.TextField
-    stars = models.IntegerField
+    name = models.CharField(max_length=100)
+    descriptions = models.TextField()
+    stars = models.IntegerField()
     contract = models.ForeignKey(ContractWithHotel)
     
     # адрес отеля
-    city = models.CharField(max_lenght=50)
+    city = models.CharField(max_length=50)
     street = models.CharField(max_length = 100)
-    house = models.CharField(max_lenght = 20)
+    house = models.CharField(max_length=50)
     geoDescription = models.TextField(blank = True, null = True)
     
     # как связаться с отелем
-    phone = models.CharField(blank = True, null = True)
+    phone = models.CharField(blank = True, null = True, max_length=50)
     email = models.EmailField(blank = True, null = True)
     web = models.URLField(blank = True, null = True)
       
     # контактное лицо
-    contactManagerName = models.CharField(blank = True, null = True)
-    contactManagerPhone = models.CharField(blank = True, null = True)
-    contectManagerMail = models.EmailField(blank = True, null = True)
+    contactManagerName = models.CharField(blank = True, null = True, max_length=50)
+    contactManagerPhone = models.CharField(blank = True, null = True, max_length=50)
+    contectManagerMail = models.EmailField(blank = True, null = True, max_length=70)
     
     def __unicode__(self):
-        return "отель {0}".format(self.name)
+        return "hotel {0}".format(self.name)
   
 # Тип номера  
 class RoomType(models.Model):
-    name = models.CharField
+    name = models.CharField(max_length=50)
     description = models.TextField(null = True, blank = True)
-    icon = models.ImageField(blank = True, null = True)
+    icon = models.ImageField(blank = True, null = True, upload_to = "/img")
     
     def __unicode__(self):
-        return "тип комнаты {0}".format(self.name)
+        return "room type {0}".format(self.name)
     
 # Номер отеля
 class Room(models.Model):
-    description = models.TextField
+    description = models.TextField()
     type = models.ForeignKey(RoomType)
     hotel  = models.ForeignKey(Hotel)
     
     def __unicode__(self):
-        return "комната в {0}: {1}".format(self.hotel.name, self.type.name)
+        return "room {0}: {1}".format(self.hotel.name, self.type.name)
     
 # Картинка для отеля или комнаты в отеле
 class Image(models.Model):   
-    url = models.URLField
-    thumbUrl = models.URLField
+    url = models.URLField()
+    thumbUrl = models.URLField()
     hotel = models.ForeignKey(Hotel, null = True)
     room = models.ForeignKey(Room, null = True)
     
@@ -77,41 +82,58 @@ class Image(models.Model):
             name = self.hotel.name
         if self.room: 
             name = self.room.type.name
-        return "картинка {0} для {1}".format(name)
+        return "pict {0} : {1}".format(name)
     
 # Описание дополнительной услуги отеля 
 class HotelService(models.Model):
-    title = models.CharField
-    description = models.TextField
-    icon = models.ImageField
+    title = models.CharField(max_length=50)
+    description = models.TextField()
+    icon = models.ImageField(upload_to = make_upload_path)
     hotel = models.ForeignKey(Hotel)
     
     def __unicode__(self):
-        return "услуга в отеле '{0}'".format(self.title)
+        return "service '{0}'".format(self.title)
  
 # бстрактный заказ чего нить   
 class Order(models.Model):
-    created = models.DateTimeField
-    orderFrom = models.DateTimeField
-    orderTo = models.DateTimeField
+    created = models.DateTimeField()
+    orderFrom = models.DateTimeField()
+    orderTo = models.DateTimeField()
     client = models.ForeignKey(User)
     room = models.ForeignKey(Room, blank = True, null = True)
-    comments = models.TextField
+    comments = models.TextField()
     
     def __unicode__(self):
-        return "заказ от {0}".format(self.client.name)
+        return "client {0}".format(self.client.name)
     
 # контактные и другие данные для юзера
 class Profile(models.Model):
     user = models.ForeignKey(User)
-    firstName = models.CharField
-    lastName = models.CharField
-    email = models.EmailField
-    phone = models.CharField
+    firstName = models.CharField(max_length=50)
+    lastName = models.CharField(max_length=50)
+    email = models.EmailField()
+    phone = models.CharField(max_length=50)
     
     def __unicode__(self):
         return "{0} {1} profile".format(self.firstName, self.lastName)
     
+# моделька для статьи 
+class Article(models.Model):
+    title = models.CharField(max_length=50)
+    body = models.TextField()
+    keywords = models.TextField()
+    menuname = models.CharField(max_length=50)
+    published = models.BooleanField()
+    
+    def __unicode__(self):
+        return "article {0}".format(self.title)
+    
+class Menu(models.Model):
+    name = models.CharField(max_length=50)
+    
+    def __unicode__(self):
+        return "menu {0}".format(self.name)
+
     
 
     
