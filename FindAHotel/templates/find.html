@@ -1,6 +1,15 @@
 <html>
-	<head> я написал это на {{ l }}</head>
-	<body><h1>{{ l }} это прикольно</h1>
-		<p>куча разнообразного контента сделаного с помощью {{ l }}</p>
+	<head> 
+		<title>
+			Отели
+		</title>
+	</head>
+	<body><h1>Отели</h1>
+		{% for hotel in hotels %}
+		<div id="hotel_div">
+			<h3>{{hotel.name}}</h3>
+			<p>звезд: {{hotel.stars}}</p>
+		</div>
+		{% endfor %}
 		
 	</body></html>

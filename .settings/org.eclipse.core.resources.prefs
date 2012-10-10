@@ -1,3 +1,6 @@
 eclipse.preferences.version=1
+encoding//FindAHotel/urls.py=utf-8
+encoding//frontend/views.py=utf-8
+encoding//hotel/admin.py=utf-8
 encoding//hotel/models.py=utf-8
 encoding//hotel/views.py=utf-8

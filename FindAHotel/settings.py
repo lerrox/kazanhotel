@@ -103,8 +103,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'FindAHotel.urls'
 
+
+ROOT_URLCONF = 'FindAHotel.urls'
+# -*- coding: utf-8 -*-
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'FindAHotel.wsgi.application'
 

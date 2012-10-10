@@ -1,14 +1,15 @@
-from django.conf.urls import patterns, include, url
-from hotel.views import index
 # -*- coding: utf-8 -*- 
 # Uncomment the next two lines to enable the admin:
+from django.conf.urls import patterns, include, url
+from frontend.views import index
 from django.contrib import admin
+from django.http import HttpResponseRedirect
 admin.autodiscover()
 
 
 urlpatterns = patterns('',
-                       
-                       (r'^find/$', index),
+    (r'^$', lambda r : HttpResponseRedirect('find/')),
+    (r'^find/$', index),
     # Examples:
     # url(r'^$', 'FindAHotel.views.home', name='home'),
     # url(r'^FindAHotel/', include('FindAHotel.foo.urls')),

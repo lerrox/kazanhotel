@@ -27,26 +27,42 @@ class ContractWithHotel(models.Model):
 # описываем отель
 class Hotel (models.Model):
     # описание отеля
-    name = models.CharField(max_length=100)
-    descriptions = models.TextField()
-    stars = models.IntegerField()
-    contract = models.ForeignKey(ContractWithHotel)
+    name = models.CharField(max_length=100, verbose_name = 'название')
+    descriptions = models.TextField(verbose_name = 'описание')
+    stars = models.IntegerField(verbose_name = 'звезд')
+    contract = models.ForeignKey(ContractWithHotel, verbose_name = 'договор')
     
     # адрес отеля
-    city = models.CharField(max_length=50)
-    street = models.CharField(max_length = 100)
-    house = models.CharField(max_length=50)
-    geoDescription = models.TextField(blank = True, null = True)
+    city = models.CharField(max_length=50, verbose_name = 'город')
+    street = models.CharField(max_length = 100, verbose_name = 'улица')
+    house = models.CharField(max_length=50, verbose_name = 'дом')
+    geoDescription = models.TextField(blank = True, null = True, 
+                                      verbose_name = 'описание расположения')
     
     # как связаться с отелем
-    phone = models.CharField(blank = True, null = True, max_length=50)
-    email = models.EmailField(blank = True, null = True)
-    web = models.URLField(blank = True, null = True)
+    phone = models.CharField(blank = True, 
+                             null = True, 
+                             max_length=50,
+                             verbose_name = 'телефон')
+    email = models.EmailField(blank = True, 
+                              null = True)
+    web = models.URLField(blank = True, 
+                          null = True,
+                          verbose_name = 'дрес сайта')
       
     # контактное лицо
-    contactManagerName = models.CharField(blank = True, null = True, max_length=50)
-    contactManagerPhone = models.CharField(blank = True, null = True, max_length=50)
-    contectManagerMail = models.EmailField(blank = True, null = True, max_length=70)
+    contactManagerName = models.CharField(blank = True, 
+                                          null = True, 
+                                          max_length=50,
+                                          verbose_name = 'ФИО менеджера ')
+    contactManagerPhone = models.CharField(blank = True, 
+                                           null = True, 
+                                           max_length=50,
+                                           verbose_name = 'телефон менеджера')
+    contectManagerMail = models.EmailField(blank = True, 
+                                           null = True, 
+                                           max_length=70,
+                                           verbose_name = 'email менеджера')
     
     def __unicode__(self):
         return "hotel {0}".format(self.name)
@@ -71,8 +87,8 @@ class Room(models.Model):
     
 # Картинка для отеля или комнаты в отеле
 class Image(models.Model):   
-    url = models.URLField()
-    thumbUrl = models.URLField()
+    url = models.ImageField(upload_to = make_upload_path)
+    thumbUrl = models.ImageField(upload_to = make_upload_path)
     hotel = models.ForeignKey(Hotel, null = True)
     room = models.ForeignKey(Room, null = True)
     
